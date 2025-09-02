@@ -1,5 +1,5 @@
-import { HistoryIcon, HouseIcon, SettingsIcon, StethoscopeIcon, TimerIcon } from 'lucide-react';
-import styles from './Styles.module.css'
+import { HistoryIcon, HouseIcon, SettingsIcon,SunIcon } from 'lucide-react';
+import styles from './styles.module.css'
 
 export function Menu() {
 
@@ -15,7 +15,7 @@ export function Menu() {
                 <SettingsIcon/>
             </a>
             <a className={styles.menuLink} href='#'>
-                <TimerIcon/>
+                <SunIcon/>
             </a>
         </nav>
     );
