@@ -1,0 +1,34 @@
+.cycles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    gap: 1.6rem;
+   
+}
+
+.cycleDot{
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    background: var(--primary);
+    border-radius: 50%;
+
+}
+
+.cycleDots{
+    display: flex;
+    gap: 0.8rem;
+}
+
+.workTime {
+    background: var(--warning);
+}
+
+.shortBreakTime {
+    background: var(--primary);
+}
+
+.longBreakTime {
+    background: var(--info);
+}
