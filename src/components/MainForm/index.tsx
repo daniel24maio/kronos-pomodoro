@@ -7,14 +7,27 @@ import type { TaskModel } from "../../models/TaskModel";
 import { useTaskContext } from "../../contexts/TaskContext/useTaskContext";
 import { getNextCycle } from "../Utils/getNextCycle";
 import { getNextCycleType } from "../Utils/getNextCyclesType";
-import { formatSecondsToMinutes } from "../Utils/formatSecondsToMinutes";
+import { TaskActionTypes } from "../../contexts/TaskContext/taskActions";
 
 export function MainForm() {
-    const { state, setState } = useTaskContext();
+    const { state, dispatch } = useTaskContext();
     const taksNameInput = useRef<HTMLInputElement>(null);
 
     const nextCycle = getNextCycle(state.currentCycle);
     const nextCycleType = getNextCycleType(nextCycle);
+
+    const tipsForWhenActiveTask = {
+        workTime: <span>Foque por {state.config.workTime} minutos</span>,
+        shortBreakTime: <span>Descanse por {state.config.shortBreakTime} minutos</span>,
+        longBreakTime: <span>Pausa longa {state.config.longBreakTime} minutos</span>,
+    };
+
+     const tipsForNoActiveTask = {
+        workTime: <span>Próximo ciclo é de {state.config.workTime} minutos</span>,
+        shortBreakTime: <span>Próximo ciclo é de {state.config.shortBreakTime} minutos</span>,
+        longBreakTime: <span>Próximo ciclo é descanso longo com {state.config.longBreakTime} minutos</span>,
+    };
+
 
     function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
 
@@ -37,39 +50,13 @@ export function MainForm() {
             interruptDate: null,
             duration: state.config[nextCycleType],
             type: nextCycleType,
-        };
+        };      
 
-        const secondsRemaining = newTask.duration * 60;
-
-        setState(prevState => {
-            return {
-                ...prevState,
-                config: { ...prevState.config },
-                activeTask: newTask,
-                currentCycle: nextCycle,
-                secondsRemaining,
-                formattedSecondsRemaining: formatSecondsToMinutes(secondsRemaining),
-                tasks: [...prevState.tasks, newTask],
-            }
-        });
+        dispatch ({type: TaskActionTypes.START_TASK, payload: newTask});     
     }
 
     function handleInterruptTask() {
-
-        setState(prevState => {
-            return {
-                ...prevState,
-                activeTask: null,
-                secondsRemaining: 0,
-                formattedSecondsRemaining: '00:00',
-                tasks: prevState.tasks.map(task => {
-                    if (prevState.activeTask && prevState.activeTask.id === task.id){
-                        return { ...task, interruptDate: Date.now() };
-                    }
-                    return task;
-                })
-            }
-        });
+        dispatch ({type: TaskActionTypes.INTERRUPT_TASK}); 
     }
 
     return (
@@ -86,7 +73,8 @@ export function MainForm() {
             </div>
 
             <div className='formRow'>
-                <p>Próximo intervalo é de 25 minuto(s)</p>
+                {!!state.activeTask && tipsForWhenActiveTask[state.activeTask.type]}
+                {!state.activeTask && tipsForNoActiveTask[nextCycleType]}
             </div>
 
             {state.currentCycle > 0 && (
