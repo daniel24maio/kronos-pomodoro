@@ -40,9 +40,10 @@ export function MainForm() {
             type: nextCycleType,
         };      
 
-        dispatch ({type: TaskActionTypes.START_TASK, payload: newTask});     
-    }
-
+        dispatch ({type: TaskActionTypes.START_TASK, payload: newTask});  
+    
+    }  
+    
     function handleInterruptTask() {
         dispatch ({type: TaskActionTypes.INTERRUPT_TASK}); 
     }
