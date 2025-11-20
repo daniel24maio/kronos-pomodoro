@@ -10,6 +10,7 @@ function ScrollToTop() {
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [pathname]);
+    
     return null;
 }
 
@@ -24,6 +25,7 @@ export function MainRouter() {
 
                 <Route path='*' element={<NotFound />} />
             </Routes>
+            <ScrollToTop />
         </BrowserRouter>
     );
 }
