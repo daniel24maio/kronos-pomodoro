@@ -6,7 +6,7 @@ export function Logo() {
 
     return (
         <div className={styles.logo}>
-            <RouterLink className={styles.logoLink} href='#'>
+            <RouterLink className={styles.logoLink} href='/'>
                 <TimerIcon/>
                 <span>Chronos</span>
             </RouterLink>
